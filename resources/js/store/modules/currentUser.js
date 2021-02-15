@@ -1,12 +1,28 @@
 const state = {
     user: {
-        email: "vetapp4you@gmail.com"
+        
     }
 };
 
 const getters = {};
 
-const actions = {};
+const actions = {
+    loginUser({},user){
+        axios.post('/api/v1/user/login',{
+            email: user.email,
+            password: user.password
+        }).then( response => {
+            if(response.data.access_token){
+                // save token in local storage
+                localStorage.setItem(
+                    "blog_token",
+                    response.data.access_token
+                )
+                window.location.replace("/home")
+            }
+        })
+    }
+};
 
 const mutations={};
 

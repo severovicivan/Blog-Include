@@ -40,6 +40,9 @@
                 window.location.href = "login"
             });
         }
+    },
+    created(){
+      axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("blog_token");
     }
   }
 </script>

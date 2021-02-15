@@ -1999,6 +1999,9 @@ __webpack_require__.r(__webpack_exports__);
         window.location.href = "login";
       });
     }
+  },
+  created: function created() {
+    axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("blog_token");
   }
 });
 
@@ -2028,11 +2031,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {
-    user: {
-      get: function get() {
-        return this.$store.state.currentUser.user;
+  data: function data() {
+    return {
+      user: {
+        email: "",
+        password: ""
       }
+    };
+  },
+  methods: {
+    login: function login() {
+      // send off to a destination or for a purpose
+      this.$store.dispatch('currentUser/loginUser', this.user);
     }
   }
 });
@@ -40134,7 +40144,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("form", [
+  return _c("div", [
     _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "exampleInputEmail1" } }, [
         _vm._v("Email address")
@@ -40167,32 +40177,46 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "button",
-      { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-      [_vm._v("Submit")]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
+    _c("div", { staticClass: "form-group" }, [
       _c("label", { attrs: { for: "exampleInputPassword1" } }, [
         _vm._v("Password")
       ]),
       _vm._v(" "),
       _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.password,
+            expression: "user.password"
+          }
+        ],
         staticClass: "form-control",
-        attrs: { type: "password", id: "exampleInputPassword1" }
+        attrs: { type: "password", id: "exampleInputPassword1" },
+        domProps: { value: _vm.user.password },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "password", $event.target.value)
+          }
+        }
       })
-    ])
-  }
-]
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: { type: "submit" },
+        on: { click: _vm.login }
+      },
+      [_vm._v("Submit")]
+    )
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -97530,13 +97554,28 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
+
 var state = {
-  user: {
-    email: "vetapp4you@gmail.com"
-  }
+  user: {}
 };
 var getters = {};
-var actions = {};
+var actions = {
+  loginUser: function loginUser(_ref, user) {
+    _objectDestructuringEmpty(_ref);
+
+    axios.post('/api/v1/user/login', {
+      email: user.email,
+      password: user.password
+    }).then(function (response) {
+      if (response.data.access_token) {
+        // save token in local storage
+        localStorage.setItem("blog_token", response.data.access_token);
+        window.location.replace("/home");
+      }
+    });
+  }
+};
 var mutations = {};
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
