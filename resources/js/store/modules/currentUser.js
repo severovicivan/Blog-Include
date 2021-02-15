@@ -1,12 +1,16 @@
 const state = {
-    user: {
-        
-    }
+    user: {}
 };
 
 const getters = {};
 
 const actions = {
+    // We will commit mutation
+    getUser({commit}){
+        axios.get("/api/v1/user/current").then(response=>{
+            commit('setUser',response.data);
+        });
+    },
     loginUser({},user){
         axios.post('/api/v1/user/login',{
             email: user.email,
@@ -24,7 +28,11 @@ const actions = {
     }
 };
 
-const mutations={};
+const mutations={
+    setUser(state,data){
+        state.user = data;
+    }
+};
 
 export default {
     namespaced: true,

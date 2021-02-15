@@ -10,7 +10,7 @@
             <v-icon>mdi-power</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Log Out</v-list-item-title>
+            <v-list-item-title>Log Out {{currentUser.first}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
     </v-list>
@@ -19,7 +19,7 @@
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Application {{loggedIn}}</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
@@ -30,7 +30,22 @@
 
 <script>
   export default {
+    props : {
+      source: String,
+    },
     data: () => ({ drawer: null }),
+    computed: {
+      loggedIn: {
+        get(){
+          return this.$store.state.currentUser.loggedIn;
+        }
+      },
+      currentUser: {
+        get(){
+          return this.$store.state.currentUser.user;
+        }
+      }
+    },
     methods: {
         logout(){
             // Axios comes preinstalled with Laravel
@@ -43,6 +58,7 @@
     },
     created(){
       axios.defaults.headers.common["Authorization"] = "Bearer " + localStorage.getItem("blog_token");
+      this.$store.dispatch('currentUser/getUser');
     }
   }
 </script>
