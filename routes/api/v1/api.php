@@ -21,5 +21,6 @@ use Illuminate\Support\Facades\Route;
 // Users routes
 Route::prefix('/user')->group(function(){
     Route::post('/login','api\v1\LoginController@login');
+    // Access to API is possible with sending a Header with key Authorization and value 'Bearer AccessToken' 
     Route::middleware('auth:api')->get('/all', 'api\v1\user\UserController@index');
 });
