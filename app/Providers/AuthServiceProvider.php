@@ -26,6 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Passport::routes();
+        Passport::tokensCan([
+            'do_anything' => 'Blogger',
+            'can_comment' => 'Visitor',
+        ]);
     }
 }

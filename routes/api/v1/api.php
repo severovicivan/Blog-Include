@@ -14,14 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::group(['prefix' => 'auth'], function(){
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+
+    Route::group(['middleware' => 'auth:api'], function(){
+        Route::get('logout','AuthController@logout');
+    });
+});
 
 // Users routes
-Route::prefix('/user')->group(function(){
-    Route::post('/login','api\v1\LoginController@login');
-    // Access to API is possible with sending a Header with key Authorization and value 'Bearer AccessToken' 
-    Route::middleware('auth:api')->get('/all', 'api\v1\user\UserController@index');
-    Route::middleware('auth:api')->get('/current', 'api\v1\user\UserController@currentUser');
-});
+// Route::prefix('/user')->group(function(){
+//     Route::post('/login','api\v1\LoginController@login');
+//     // Access to API is possible with sending a Header with key Authorization and value 'Bearer AccessToken' 
+//     Route::middleware('auth:api')->get('/all', 'api\v1\user\UserController@index');
+//     Route::middleware('auth:api')->get('/current', 'api\v1\user\UserController@currentUser');
+// });
