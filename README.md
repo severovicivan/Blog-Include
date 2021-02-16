@@ -1,6 +1,6 @@
 ## Blog REST API dokumentacija
 
-Projekt je kreiran 15.2.2021. u 19:08, a u 19:20 obavljen first commit. (To navodim samo radi roka od 24 sata koji bio potreban za izradu REST API-ja).
+Projekt je kreiran 15.2.2021. u 19:08 (To navodim samo radi roka od 24 sata koji bio potreban za izradu REST API-ja).
 
 Nakon kreiranja projekta pomoću composera sam dodao Passport, a od ostalih 3rd party paketa pomoću npm-a Vue, Vuetify i Vuex. Nakon obavljenih migracija sam seederom dodao u bazu korisnika s ulogom (role) **blogger**. Potom sam u AuthServiceProvider.php dodao sljedeće:
 
